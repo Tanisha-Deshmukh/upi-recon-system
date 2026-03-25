@@ -64,6 +64,15 @@ const seedBank = async () => {
                 balance: 50000,
                 holderName: "Tanisha",
                 pin: "1122" 
+            },
+            {
+                bankId: sbi._id,
+                accountNumber: "7798216447",
+                ifsc: "SBI10101010",
+                phoneNumber: "7796074611",
+                balance: 100000,
+                holderName: "Tanisha Deshmukh",
+                pin: "1122"
             }
         ]);
 

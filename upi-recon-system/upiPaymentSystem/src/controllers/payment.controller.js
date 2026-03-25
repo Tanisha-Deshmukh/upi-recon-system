@@ -97,7 +97,31 @@ export const initiatePayment = AsyncHandler(async (req, res) => {
 
 
         if (bankResponse.data && bankResponse.data.success) {
-            // Also credit receiver's bank account (if they're in the same mock bank system)
+            // ₹888 SIMULATION: bank debited successfully but UPI "drops" the callback
+            // this creates the exact mismatch the reconciliation engine is built to fix
+            if (Number(amount) === 888) {
+                console.log(`⚠️ [SIM] ₹888 trigger! Bank debited but UPI dropping callback. Txn ${txRecord._id} stays PENDING.`);
+                // credit receiver at bank level (money actually moved)
+                try {
+                    if (receiverAccount.bankId) {
+                        await axios.post(`${process.env.BANK_API_URL}/credit`, {
+                            bankId: receiverAccount.bankId,
+                            accountNumber: receiverAccount.accountNumber,
+                            amount,
+                            upiId: req.user.upiId
+                        }, { timeout: 10000 });
+                    }
+                } catch (e) { /* silent - bank side only */ }
+                // deduct local balance so the dashboard reflects the debit immediately
+                senderAccount.balance -= Number(amount);
+                await senderAccount.save();
+                // DO NOT update txRecord to SUCCESS - leave it PENDING for recon engine
+                return res.status(503).json(
+                    new ApiResponse(503, { txId: txRecord._id }, "UPI network timeout. Your payment is pending and will be auto-reconciled shortly.")
+                );
+            }
+
+            // normal flow - credit receiver's bank account
             try {
                 if (receiverAccount.bankId) {
                     await axios.post(`${process.env.BANK_API_URL}/credit`, {
