@@ -1,0 +1,391 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ──────────────────────────────────────────
+   THEME TOKENS
+   theme-default / theme-light = white + navy
+   theme-dark                  = dark navy + light blue
+────────────────────────────────────────── */
+:root,
+html.theme-default,
+html.theme-light {
+  --primary:        #1e3b8a;
+  --primary-hover:  #172e6d;
+  --primary-light:  #eff6ff;
+  --surface:        #f8fafc;
+
+  --bg-base:        #ffffff;        /* pure white page background */
+  --bg-sidebar:     #ffffff;
+  --bg-navbar:      #ffffff;
+  --bg-card:        #ffffff;
+  --bg-input:       #f8fafc;
+  --bg-hover:       #eff6ff;
+
+  --border-color:   #e2e8f0;
+  --border-light:   #f1f5f9;
+
+  --text-heading:   #0f172a;
+  --text-body:      #1e293b;
+  --text-muted:     #64748b;
+  --text-subtle:    #94a3b8;
+
+  --accent:         #1e3b8a;        /* icon / link accent       */
+  --accent-light:   #eff6ff;
+}
+
+html.theme-dark {
+  --primary:        #38bdf8;        /* light-blue accent        */
+  --primary-hover:  #0ea5e9;
+  --primary-light:  #082f49;        /* dark tinted light bg     */
+  --surface:        #0f172a;
+
+  /* Semantic tokens */
+  --bg-base:        #0f172a;        /* deep navy page bg        */
+  --bg-sidebar:     #0d1526;        /* slightly deeper sidebar  */
+  --bg-navbar:      #111827;        /* navbar                   */
+  --bg-card:        #1e293b;        /* card / modal surface     */
+  --bg-input:       #1e293b;
+  --bg-hover:       #263347;
+
+  --border-color:   #1e3a5f;
+  --border-light:   #1e3a5f;
+
+  --text-heading:   #f0f9ff;
+  --text-body:      #cbd5e1;
+  --text-muted:     #94a3b8;
+  --text-subtle:    #64748b;
+
+  --accent:         #38bdf8;
+  --accent-light:   #082f49;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-base);
+  color: var(--text-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ── Dark theme structural overrides ── */
+html.theme-dark ::-webkit-scrollbar-track  { background: #0f172a; }
+html.theme-dark ::-webkit-scrollbar-thumb  { background: #1e3a5f; }
+html.theme-dark ::-webkit-scrollbar-thumb:hover { background: #38bdf8; }
+
+/* Sidebar */
+html.theme-dark aside {
+  background-color: var(--bg-sidebar) !important;
+  border-color: var(--border-color) !important;
+}
+
+/* Navbar */
+html.theme-dark header {
+  background-color: var(--bg-navbar) !important;
+  border-color: var(--border-color) !important;
+}
+
+/* Cards */
+html.theme-dark .card {
+  background-color: var(--bg-card) !important;
+  border-color: var(--border-color) !important;
+}
+
+/* Generic white backgrounds used throughout pages */
+html.theme-dark .bg-white {
+  background-color: var(--bg-card) !important;
+}
+
+/* Text overrides */
+html.theme-dark .text-slate-900,
+html.theme-dark .text-slate-800 { color: var(--text-heading) !important; }
+html.theme-dark .text-slate-700,
+html.theme-dark .text-slate-600 { color: var(--text-body)    !important; }
+html.theme-dark .text-slate-500,
+html.theme-dark .text-slate-400 { color: var(--text-muted)   !important; }
+
+/* Borders */
+html.theme-dark .border-slate-200,
+html.theme-dark .border-slate-100 { border-color: var(--border-color) !important; }
+
+/* Inputs */
+html.theme-dark .input-field,
+html.theme-dark input[type='text'],
+html.theme-dark input[type='email'],
+html.theme-dark input[type='password'] {
+  background-color: var(--bg-input)  !important;
+  border-color:     var(--border-color) !important;
+  color:            var(--text-body) !important;
+}
+html.theme-dark input::placeholder { color: var(--text-subtle) !important; }
+
+/* Sidebar nav links */
+html.theme-dark .sidebar-link {
+  color: var(--text-muted);
+}
+html.theme-dark .sidebar-link:hover {
+  background-color: var(--bg-hover);
+  color: var(--accent);
+}
+html.theme-dark .sidebar-link-active {
+  background-color: var(--accent-light);
+  color: var(--accent);
+}
+
+/* Table header rows */
+html.theme-dark .table-header,
+html.theme-dark .bg-slate-50 {
+  background-color: var(--bg-hover) !important;
+}
+
+/* Hover states */
+html.theme-dark .hover\:bg-slate-100:hover,
+html.theme-dark .hover\:bg-slate-50:hover {
+  background-color: var(--bg-hover) !important;
+}
+
+
+
+/* ── Dark theme glass-card override ── */
+html.theme-dark .glass-card {
+  background: rgba(36, 173, 191, 0.08); /* Transparent turquoise glass */
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+html.theme-dark .glass-card::before {
+  content: '';
+  position: absolute;
+  top: -100%; left: -100%; width: 300%; height: 300%;
+  background: linear-gradient(135deg, transparent 45%, rgba(255, 255, 255, 0.05) 50%, transparent 55%);
+  pointer-events: none;
+}
+html.theme-dark .glass-card:hover {
+  background: rgba(36, 173, 191, 0.12);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-4px);
+}
+
+/* ── Dark theme .card override ── */
+html.theme-dark .card {
+  background: rgba(36, 173, 191, 0.05) !important;
+  backdrop-filter: blur(32px);
+  -webkit-backdrop-filter: blur(32px);
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
+  transition: all 0.3s ease;
+}
+html.theme-dark .card:hover {
+  background: rgba(36, 173, 191, 0.08) !important;
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* ── Dark mode page body mesh gradient for glass effect to pop ── */
+html.theme-dark body {
+  background-image:
+    radial-gradient(ellipse at 20% 20%, rgba(56, 189, 248, 0.06) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 80%, rgba(14, 165, 233, 0.05) 0%, transparent 60%);
+}
+
+/* Light/Default mode page body — solid white */
+html.theme-light body,
+html.theme-default body {
+  background: #ffffff;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.delay-100 { animation-delay: 0.1s; opacity: 0; }
+.delay-200 { animation-delay: 0.2s; opacity: 0; }
+
+
+
+/* Status badge utilities */
+@layer components {
+  .badge-matched {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800;
+  }
+  .badge-pending {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800;
+  }
+  .badge-failed {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800;
+  }
+  .badge-failed-glass {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold leading-none bg-red-500/20 text-red-600 border border-red-500/20 backdrop-blur-md shadow-sm;
+  }
+  .badge-active {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800;
+  }
+
+  .card {
+    background: rgba(36, 173, 191, 0.15); /* Increased opacity for visibility */
+    backdrop-filter: blur(32px);
+    -webkit-backdrop-filter: blur(32px);
+    border-radius: 12px;
+    border: 1px solid rgba(36, 173, 191, 0.4); /* Colored border for definition */
+    box-shadow: 0 8px 32px rgba(36, 173, 191, 0.15), inset 0 1px 1px rgba(255,255,255,0.8);
+    transition: all 0.3s ease;
+    overflow: hidden;
+  }
+  .card:hover {
+    background: rgba(36, 173, 191, 0.22);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(36, 173, 191, 0.2), inset 0 1px 1px rgba(255,255,255,1);
+  }
+
+  /* ── Global Glassmorphism Card (premium soft blue frosted glass) ── */
+  .glass-card {
+    background: rgba(36, 173, 191, 0.2); /* Increased opacity for slab visibility */
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+    border-radius: 16px;
+    border: 1px solid rgba(36, 173, 191, 0.5); /* Colored border for definition */
+    box-shadow: 0 8px 32px rgba(36, 173, 191, 0.18), inset 0 1px 1px rgba(255,255,255,0.9);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .glass-card::before {
+    content: '';
+    position: absolute;
+    top: -100%; left: -100%; width: 300%; height: 300%;
+    background: linear-gradient(135deg, transparent 45%, rgba(255, 255, 255, 0.2) 50%, transparent 55%);
+    pointer-events: none;
+  }
+  .glass-card:hover {
+    background: rgba(36, 173, 191, 0.28);
+    transform: translateY(-4px);
+    box-shadow: 0 16px 48px rgba(36, 173, 191, 0.25);
+    border-color: rgba(36, 173, 191, 0.7);
+  }
+
+  .btn-primary {
+    @apply bg-primary text-white font-semibold px-4 py-2 rounded-custom hover:bg-primary-hover transition-colors duration-200 shadow-sm;
+  }
+
+  .btn-secondary {
+    @apply bg-white border border-slate-200 text-slate-700 font-medium px-4 py-2 rounded-custom hover:bg-slate-50 transition-colors duration-200;
+  }
+
+  .sidebar-link {
+    @apply flex items-center gap-3 px-3 py-2 rounded-custom text-slate-600 hover:bg-slate-50 hover:text-primary transition-colors duration-200 text-sm font-medium;
+  }
+
+  .sidebar-link-active {
+    @apply flex items-center gap-3 px-3 py-2 rounded-custom bg-primary-light text-primary font-semibold text-sm;
+  }
+
+  .table-header {
+    @apply bg-slate-50 text-slate-500 text-xs uppercase tracking-wider;
+  }
+  
+  .input-field {
+    @apply w-full border border-slate-300 rounded-custom px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200;
+  }
+
+  .text-incoming {
+    @apply font-bold text-green-600;
+  }
+  .text-outgoing {
+    @apply font-bold text-red-500;
+  }
+}
+
+/* Recharts customizations */
+.recharts-tooltip-wrapper {
+  border-radius: 8px !important;
+  overflow: hidden;
+}
+
+/* Toggle switch */
+.toggle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.toggle input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-track {
+  width: 44px;
+  height: 24px;
+  background-color: #cbd5e1;
+  border-radius: 999px;
+  transition: background-color 0.2s;
+  position: relative;
+}
+
+.toggle input:checked + .toggle-track {
+  background-color: #1e3b8a;
+}
+
+.toggle-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  background: white;
+  border-radius: 50%;
+  transition: transform 0.2s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.toggle input:checked ~ .toggle-thumb,
+.toggle input:checked + .toggle-track + .toggle-thumb {
+  transform: translateX(20px);
+}

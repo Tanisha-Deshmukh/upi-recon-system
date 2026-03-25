@@ -1,0 +1,1 @@
+export const DB_name = "upi_payment_db";
