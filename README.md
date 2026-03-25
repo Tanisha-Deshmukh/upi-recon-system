@@ -22,7 +22,7 @@ While the core API handles live, high-speed transactions, the background reconci
 ### 2. Reconciliation Engine & Receiver Notifications
 - **Automated Cron Jobs**: Background workers that continuously poll and match `PENDING` transactions against the banking ledger.
 - **Anomaly Resolution**: Automatically resolves mismatched transaction statuses (e.g., failed UPI drops that were credited at the bank).
-- **Receiver-First Alerts**: This Web Push Notification system is specially designed for the **receiver**. In the real world, if the receiver's banking server goes down or delays the response, the sender's app might show "Pending" or "Failed", causing panic. The moment our background engine confirms the money successfully reached the receiver's bank, it instantly fires a push notification directly to the receiver's device. They know they got paid securely without having to constantly refresh the dashboard!
+- **Receiver-First Alerts**: This Web Push Notification system is specially designed for the **receiver**. In the real world, if the UPI network drops the success callback or instances a network timeout, the sender's app might show the transaction as "Pending" or "Failed" even though the sender got debited. The moment our background engine syncs with the banking ledger and confirms the money successfully reached the receiver's account, it instantly fires a push notification directly to the receiver's device. They know they got paid securely without waiting for the sender's app to update!
 
 ### 3. Mock Bank API
 - **Simulated Banking Gateway**: Acts as the single source of truth for account balances and external transactions.
