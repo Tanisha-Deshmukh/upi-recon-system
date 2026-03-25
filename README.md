@@ -19,10 +19,10 @@ While the core API handles live, high-speed transactions, the background reconci
 - **Bank Discovery & Linking**: Connect accounts securely using OAuth-like flows with a mock bank API.
 - **FastPay PIN**: 6-digit secure hashed PIN required for all transactions.
 
-### 2. Reconciliation Engine
+### 2. Reconciliation Engine & Receiver Notifications
 - **Automated Cron Jobs**: Background workers that continuously poll and match `PENDING` transactions against the banking ledger.
 - **Anomaly Resolution**: Automatically resolves mismatched transaction statuses (e.g., failed UPI drops that were credited at the bank).
-- **Web Push Notifications**: Instantly alerts users via service workers when a transaction is recovered and reconciled by the engine.
+- **Receiver-First Alerts**: This Web Push Notification system is specially designed for the **receiver**. In the real world, if the receiver's banking server goes down or delays the response, the sender's app might show "Pending" or "Failed", causing panic. The moment our background engine confirms the money successfully reached the receiver's bank, it instantly fires a push notification directly to the receiver's device. They know they got paid securely without having to constantly refresh the dashboard!
 
 ### 3. Mock Bank API
 - **Simulated Banking Gateway**: Acts as the single source of truth for account balances and external transactions.
