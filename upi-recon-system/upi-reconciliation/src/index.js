@@ -1,4 +1,4 @@
-import dotenv from "dotenv";
+import "./loadEnv.js"; // 👈 CRITICAL: Must be first to load .env before other imports
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
@@ -9,8 +9,6 @@ import { ApiResponse } from "./utils/ApiResponse.js";
 // Import routers
 import userRouter from "./routes/user.routes.js";
 import recoRouter from "./routes/reco.routes.js";
-
-dotenv.config({ path: './.env' }); // Force it to look in the current folder
 
 const app = express();
 

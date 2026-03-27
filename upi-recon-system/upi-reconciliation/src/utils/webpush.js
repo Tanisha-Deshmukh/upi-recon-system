@@ -1,8 +1,6 @@
 import webpush from "web-push";
 import dotenv from "dotenv";
 
-dotenv.config();
-
 webpush.setVapidDetails(
     process.env.VAPID_EMAIL || "mailto:example@gmail.com",
     process.env.VAPID_PUBLIC_KEY,

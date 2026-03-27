@@ -84,6 +84,19 @@ function App() {
                 console.log('✅ User subscribed to push');
               }
               window.pushSubscription = sub;
+              
+              // Save push subscription to database
+              try {
+                const response = await axios.post(`${import.meta.env.VITE_RECON_API_URL}/users/subscribe-push`, {
+                  subscription: sub
+                }, {
+                  withCredentials: true
+                });
+                console.log('✅ Push subscription saved to DB');
+              } catch (error) {
+                console.error('❌ Failed to save push subscription:', error);
+              }
+              
               return sub;
             } catch (err) {
               console.error('❌ Push subscription failed:', err);
