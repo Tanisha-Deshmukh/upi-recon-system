@@ -152,7 +152,7 @@ const linkBankAccount = async (req, res, next) => {
 
         // Verify with Mock Bank API to ensure the account truly exists in the DB
         try {
-            const mockBankUrl = process.env.MOCK_BANK_API_URL || 'http://localhost:5000/api/v1/bank';
+            const mockBankUrl = process.env.BANK_API_URL || 'http://localhost:5000/api/v1/bank';
             await axios.post(`${mockBankUrl}/verify`, { accountNumber, ifsc: ifscCode });
         } catch (err) {
             throw new ApiError(400, "Verification Failed: This account number and IFSC do not exist in the bank's database. Create it first.");
@@ -183,7 +183,7 @@ const getUserAccounts = async (req, res, next) => {
             return res.status(200).json(new ApiResponse(200, [], "No linked accounts"));
         }
 
-        const mockBankUrl = process.env.MOCK_BANK_API_URL || 'http://localhost:5000/api/v1/bank';
+        const mockBankUrl = process.env.BANK_API_URL || 'http://localhost:5000/api/v1/bank';
         
         const accountDataPromises = user.linkedBankAccount.map(async (accountNumber) => {
             let bankName = "Linked Bank";
@@ -216,7 +216,7 @@ const getUserAccounts = async (req, res, next) => {
             }
 
             return {
-                _id: user._id,
+                _id: accountNumber,
                 bankName, 
                 accountNumber,
                 ifsc: ifscCode,

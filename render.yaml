@@ -57,6 +57,8 @@ services:
         value: My7PyfeYqEdbPUJkDdqaj5Um0KvvVFzdF7t9_LVPeBk
       - key: VAPID_EMAIL
         value: mailto:tanishadeshmukh44@gmail.com
+      - key: BANK_API_URL
+        value: https://mock-bank-api.onrender.com/api/v1/bank
       - key: NODE_ENV
         value: production
 
