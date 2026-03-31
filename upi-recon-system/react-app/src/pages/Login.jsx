@@ -16,7 +16,7 @@ export default function Login() {
     setError('');
     
     try {
-  const apiUrl = (import.meta.env.VITE_RECON_API_URL || 'http://localhost:8001/api/v1') + '/users'; 
+      const apiUrl = (import.meta.env.VITE_RECON_API_URL || 'http://localhost:8001/api/v1') + '/users'; 
       
       const response = await axios.post(
         `${apiUrl}/login`, 
@@ -28,10 +28,16 @@ export default function Login() {
         // saving user so the app knows we logged in
         localStorage.setItem('user', JSON.stringify(response.data.data.user));
         
+        // Show success before navigating so user knows something happened
+        alert("Login successful! Redirecting...");
         navigate('/dashboard');
       }
     } catch (err) {
-      setError(err.response?.data?.message || "Invalid credentials. Please try again.");
+      if (!err.response) {
+        setError("Network Error: Could not connect to the Backend API. Please ensure the server is running.");
+      } else {
+        setError(err.response?.data?.message || "Invalid credentials. Please try again.");
+      }
     }
   }
 

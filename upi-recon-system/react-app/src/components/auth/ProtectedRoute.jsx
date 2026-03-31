@@ -14,6 +14,7 @@ export default function ProtectedRoute({ children }) {
       } catch (error) {
         setIsAuthenticated(false);
         localStorage.removeItem('user'); // Clean up any fake local injections
+        alert("Session invalid or backend unavailable. Please log in again.");
       }
     };
     validateSession();
