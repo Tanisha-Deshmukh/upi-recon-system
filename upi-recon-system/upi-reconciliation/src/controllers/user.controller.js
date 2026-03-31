@@ -87,8 +87,8 @@ const loginUser = AsyncHandler(async (req, res) => {
 
     const cookieOptions = {
         httpOnly: true,
-        secure: true,
-        sameSite: 'none'
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
     };
 
     return res.status(200)
@@ -100,9 +100,16 @@ const loginUser = AsyncHandler(async (req, res) => {
 // --- 4. Logout User ---
 const logoutUser = AsyncHandler(async (req, res) => {
     await RecoUser.findByIdAndUpdate(req.user._id, { $unset: { refreshToken: 1 } });
+    
+    const cookieOptions = {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
+    };
+
     return res.status(200)
-        .clearCookie("recoAccessToken", { httpOnly: true, secure: true })
-        .clearCookie("recoRefreshToken", { httpOnly: true, secure: true })
+        .clearCookie("recoAccessToken", cookieOptions)
+        .clearCookie("recoRefreshToken", cookieOptions)
         .json(new ApiResponse(200, {}, "Logged out successfully"));
 });
 
