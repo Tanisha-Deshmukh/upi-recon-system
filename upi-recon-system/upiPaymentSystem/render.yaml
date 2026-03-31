@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: upi-payment-system
+    runtime: node
+    plan: free
+    buildCommand: "npm install"
+    startCommand: "npm start"
+    envVars:
+      - key: PORT
+        value: 8000
+      - key: MONGODB_URI
+        fromDatabase:
+          name: paysync-mongodb
+          property: connectionString
+      - key: CORS_ORIGIN
+        value: https://paysync-frontend.onrender.com
+      - key: BANK_API_URL
+        value: https://mock-bank-api.onrender.com/api/v1/bank
+      - key: ACCESS_TOKEN_SECRET
+        generateValue: true
+      - key: REFRESH_TOKEN_SECRET
+        generateValue: true
+      - key: NODE_ENV
+        value: production

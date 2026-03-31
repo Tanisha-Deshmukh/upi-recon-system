@@ -1,0 +1,91 @@
+services:
+  # Mock Bank API
+  - type: web
+    name: mock-bank-api
+    runtime: node
+    plan: free
+    buildCommand: "cd mock-bank-api && npm install"
+    startCommand: "cd mock-bank-api && npm install && npm start"
+    envVars:
+      - key: PORT
+        value: 5000
+      - key: MONGODB_URI
+        fromDatabase:
+          name: paysync-mongodb
+          property: connectionString
+      - key: NODE_ENV
+        value: production
+
+  # UPI Payment System
+  - type: web
+    name: upi-payment-system
+    runtime: node
+    plan: free
+    buildCommand: "cd upi-recon-system/upiPaymentSystem && npm install"
+    startCommand: "cd upi-recon-system/upiPaymentSystem && npm start"
+    envVars:
+      - key: PORT
+        value: 8000
+      - key: MONGODB_URI
+        fromDatabase:
+          name: paysync-mongodb
+          property: connectionString
+      - key: CORS_ORIGIN
+        value: https://paysync-frontend.onrender.com
+      - key: BANK_API_URL
+        value: https://mock-bank-api.onrender.com/api/v1/bank
+      - key: ACCESS_TOKEN_SECRET
+        generateValue: true
+      - key: REFRESH_TOKEN_SECRET
+        generateValue: true
+      - key: NODE_ENV
+        value: production
+
+  # Reconciliation Engine (Background Worker)
+  - type: worker
+    name: reconciliation-engine
+    runtime: node
+    plan: free
+    buildCommand: "cd upi-recon-system/upi-reconciliation && npm install"
+    startCommand: "cd upi-recon-system/upi-reconciliation && npm start"
+    envVars:
+      - key: PORT
+        value: 8001
+      - key: MONGODB_URI
+        fromDatabase:
+          name: paysync-mongodb
+          property: connectionString
+      - key: UPI_API_URL
+        value: https://upi-payment-system.onrender.com/api/v1
+      - key: PUBLIC_VAPID_KEY
+        generateValue: true
+      - key: PRIVATE_VAPID_KEY
+        generateValue: true
+      - key: VAPID_EMAIL
+        value: mailto:paysync@yourdomain.com
+      - key: NODE_ENV
+        value: production
+
+  # React Frontend
+  - type: web
+    name: paysync-frontend
+    runtime: static
+    plan: free
+    buildCommand: "cd upi-recon-system/react-app && npm install && npm run build"
+    staticPublishPath: upi-recon-system/react-app/dist
+    envVars:
+      - key: VITE_UPI_API_URL
+        value: https://upi-payment-system.onrender.com/api/v1
+      - key: VITE_RECON_API_URL
+        value: https://reconciliation-engine.onrender.com/api/v1
+      - key: VITE_MOCK_BANK_API_URL
+        value: https://mock-bank-api.onrender.com/api/v1
+      - key: VITE_VAPID_PUBLIC_KEY
+        fromService:
+          name: reconciliation-engine
+          envVarKey: PUBLIC_VAPID_KEY
+
+databases:
+  - name: paysync-mongodb
+    databaseName: paysync
+    user: paysync_user

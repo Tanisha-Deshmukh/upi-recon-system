@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: paysync-frontend
+    runtime: static
+    plan: free
+    buildCommand: "npm install && npm run build"
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_UPI_API_URL
+        value: https://upi-payment-system.onrender.com/api/v1
+      - key: VITE_RECON_API_URL
+        value: https://reconciliation-engine.onrender.com/api/v1
+      - key: VITE_MOCK_BANK_API_URL
+        value: https://mock-bank-api.onrender.com/api/v1
+      - key: VITE_VAPID_PUBLIC_KEY
+        fromService:
+          name: reconciliation-engine
+          envVarKey: PUBLIC_VAPID_KEY
