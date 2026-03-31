@@ -85,9 +85,15 @@ const loginUser = AsyncHandler(async (req, res) => {
     const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(user._id);
     const loggedInUser = await RecoUser.findById(user._id).select("-password -refreshToken");
 
+    const cookieOptions = {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'none'
+    };
+
     return res.status(200)
-        .cookie("recoAccessToken", accessToken, { httpOnly: true, secure: false, sameSite: 'lax' })
-        .cookie("recoRefreshToken", refreshToken, { httpOnly: true, secure: false, sameSite: 'lax' })
+        .cookie("recoAccessToken", accessToken, cookieOptions)
+        .cookie("recoRefreshToken", refreshToken, cookieOptions)
         .json(new ApiResponse(200, { user: loggedInUser, accessToken, refreshToken }, "Logged in successfully"));
 });
 
@@ -115,9 +121,15 @@ const refreshAccessToken = AsyncHandler(async (req, res) => {
 
         const { accessToken, refreshToken: newRefreshToken } = await generateAccessAndRefreshTokens(user._id);
 
+        const cookieOptions = {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none'
+        };
+
         return res.status(200)
-            .cookie("recoAccessToken", accessToken, { httpOnly: true, secure: false, sameSite: 'lax' })
-            .cookie("recoRefreshToken", newRefreshToken, { httpOnly: true, secure: false, sameSite: 'lax' })
+            .cookie("recoAccessToken", accessToken, cookieOptions)
+            .cookie("recoRefreshToken", newRefreshToken, cookieOptions)
             .json(new ApiResponse(200, { accessToken, refreshToken: newRefreshToken }, "Token refreshed"));
     } catch (error) {
         throw new ApiError(401, error?.message || "Invalid refresh token");
