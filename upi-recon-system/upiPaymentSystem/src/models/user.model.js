@@ -44,7 +44,7 @@ UserSchema.methods.generateAccessToken = function () {
     return jwt.sign(
         { _id: this._id, upiId: this.upiId, phone: this.phone },
         process.env.ACCESS_TOKEN_SECRET,
-        { expiresIn: process.env.ACCESS_TOKEN_EXPIRY }
+        { expiresIn: process.env.ACCESS_TOKEN_EXPIRY || "1d" }
     );
 };
 
@@ -52,7 +52,7 @@ UserSchema.methods.generateRefreshToken = function () {
     return jwt.sign(
         { _id: this._id },
         process.env.REFRESH_TOKEN_SECRET,
-        { expiresIn: process.env.REFRESH_TOKEN_EXPIRY }
+        { expiresIn: process.env.REFRESH_TOKEN_EXPIRY || "10d" }
     );
 };
 
