@@ -1,17 +1,30 @@
 import admin from "firebase-admin";
 
-// Make sure you initialize Firebase admin in your index.js or app.js first!
+let firebaseInitialized = false;
+
+try {
+    if (!admin.apps.length) {
+        admin.initializeApp();
+        firebaseInitialized = true;
+    } else {
+        firebaseInitialized = true;
+    }
+} catch (e) {
+    console.warn("Firebase Admin not initialized (no credentials). Push notifications via FCM will be skipped.");
+}
+
 export const sendPushNotification = async (deviceToken, title, body) => {
     if (!deviceToken) {
         console.log("Skipping notification: User doesn't have a device token.");
         return;
     }
+    if (!firebaseInitialized) {
+        console.log("Skipping FCM notification: Firebase not configured.");
+        return;
+    }
 
     const message = {
-        notification: {
-            title: title,
-            body: body
-        },
+        notification: { title, body },
         token: deviceToken,
     };
 
