@@ -52,11 +52,11 @@ services:
       - key: UPI_API_URL
         value: https://upi-payment-system.onrender.com/api/v1
       - key: PUBLIC_VAPID_KEY
-        generateValue: true
+        value: BOv58v_3DS9gYtNJbqyArK66saENo7rSWoJnXdB177GHlJdrDyWqMc0Kh1_O722rFoiKlOQL8eWY7pq0c5ntrmo
       - key: PRIVATE_VAPID_KEY
-        generateValue: true
+        value: My7PyfeYqEdbPUJkDdqaj5Um0KvvVFzdF7t9_LVPeBk
       - key: VAPID_EMAIL
-        value: mailto:paysync@yourdomain.com
+        value: mailto:tanishadeshmukh44@gmail.com
       - key: NODE_ENV
         value: production
 
@@ -66,6 +66,10 @@ services:
     runtime: static
     buildCommand: "cd upi-recon-system/react-app && npm install && npm run build"
     staticPublishPath: upi-recon-system/react-app/dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
     envVars:
       - key: VITE_UPI_API_URL
         value: https://upi-payment-system.onrender.com/api/v1
