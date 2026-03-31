@@ -5,4 +5,5 @@ build/
 .DS_Store
 humanize.cjs
 humanize.js
-package-lock.json
+*.log
+*.txt
