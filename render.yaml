@@ -4,8 +4,8 @@ services:
     name: mock-bank-api
     runtime: node
     plan: free
-    buildCommand: "cd mock-bank-api && npm install"
-    startCommand: "cd mock-bank-api && npm install && npm start"
+    buildCommand: "cd upi-recon-system/mock-bank-api && npm install"
+    startCommand: "cd upi-recon-system/mock-bank-api && npm start"
     envVars:
       - key: PORT
         value: 5000
