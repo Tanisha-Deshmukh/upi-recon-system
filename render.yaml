@@ -64,7 +64,6 @@ services:
   - type: web
     name: paysync-frontend
     runtime: static
-    plan: free
     buildCommand: "cd upi-recon-system/react-app && npm install && npm run build"
     staticPublishPath: upi-recon-system/react-app/dist
     envVars:
