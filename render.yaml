@@ -42,7 +42,7 @@ services:
         value: production
 
   # Reconciliation Engine (Background Worker)
-  - type: worker
+  - type: web
     name: reconciliation-engine
     runtime: node
     plan: free
@@ -82,7 +82,7 @@ services:
         value: https://mock-bank-api.onrender.com/api/v1
       - key: VITE_VAPID_PUBLIC_KEY
         fromService:
-          type: worker
+          type: web
           name: reconciliation-engine
           envVarKey: PUBLIC_VAPID_KEY
 
