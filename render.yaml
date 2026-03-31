@@ -10,9 +10,7 @@ services:
       - key: PORT
         value: 5000
       - key: MONGODB_URI
-        fromDatabase:
-          name: paysync-mongodb
-          property: connectionString
+        sync: false
       - key: NODE_ENV
         value: production
 
@@ -27,9 +25,7 @@ services:
       - key: PORT
         value: 8000
       - key: MONGODB_URI
-        fromDatabase:
-          name: paysync-mongodb
-          property: connectionString
+        sync: false
       - key: CORS_ORIGIN
         value: https://paysync-frontend.onrender.com
       - key: BANK_API_URL
@@ -52,9 +48,7 @@ services:
       - key: PORT
         value: 8001
       - key: MONGODB_URI
-        fromDatabase:
-          name: paysync-mongodb
-          property: connectionString
+        sync: false
       - key: UPI_API_URL
         value: https://upi-payment-system.onrender.com/api/v1
       - key: PUBLIC_VAPID_KEY
@@ -86,7 +80,3 @@ services:
           name: reconciliation-engine
           envVarKey: PUBLIC_VAPID_KEY
 
-databases:
-  - name: paysync-mongodb
-    databaseName: paysync
-    user: paysync_user
