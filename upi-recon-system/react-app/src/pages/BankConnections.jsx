@@ -48,7 +48,7 @@ export default function BankConnections() {
         ...(activeToken && { headers: { Authorization: `Bearer ${activeToken}` } })
       }
 
-      const res = await axios.get(`${UPI_API}/users/accounts`, config)
+      const res = await axios.get(`${RECON_API}/users/accounts`, config)
       
       if (res?.data?.success && Array.isArray(res?.data?.data)) {
         const formattedBanks = res.data.data.map((acc, index) => {
@@ -101,7 +101,7 @@ export default function BankConnections() {
       const user = JSON.parse(localStorage.getItem('user') || '{}')
       const activeToken = token || user?.accessToken || user?.token
 
-      const res = await axios.post(`${UPI_API}/users/link-bank`, {
+      const res = await axios.post(`${RECON_API}/users/link-bank`, {
         bankName,
         accountNumber,
         ifscCode
