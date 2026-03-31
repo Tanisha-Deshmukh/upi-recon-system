@@ -1,11 +1,15 @@
 import webpush from "web-push";
 import dotenv from "dotenv";
 
-webpush.setVapidDetails(
-    process.env.VAPID_EMAIL || "mailto:example@gmail.com",
-    process.env.VAPID_PUBLIC_KEY,
-    process.env.VAPID_PRIVATE_KEY
-);
+if (process.env.VAPID_PUBLIC_KEY && process.env.VAPID_PRIVATE_KEY) {
+    webpush.setVapidDetails(
+        process.env.VAPID_EMAIL || "mailto:example@gmail.com",
+        process.env.VAPID_PUBLIC_KEY,
+        process.env.VAPID_PRIVATE_KEY
+    );
+} else {
+    console.warn("VAPID keys not set. Web push notifications will be disabled.");
+}
 
 export const sendPushNotification = async (subscription, payload) => {
     try {
