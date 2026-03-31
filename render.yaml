@@ -82,6 +82,7 @@ services:
         value: https://mock-bank-api.onrender.com/api/v1
       - key: VITE_VAPID_PUBLIC_KEY
         fromService:
+          type: worker
           name: reconciliation-engine
           envVarKey: PUBLIC_VAPID_KEY
 
